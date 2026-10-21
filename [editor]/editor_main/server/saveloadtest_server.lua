@@ -1,7 +1,10 @@
 g_in_test = false
 local g_restoreEDF, dumpTimer
-local g_default_spawnmaponstart,g_default_spawnmapondeath,g_defaultwelcometextonstart
-local restoreGUIOnMapStop, restoreGUIOnGamemodeMapStop, startGamemodeOnStop
+local g_default_spawnmaponstart,g_default_spawnmapondeath,g_default_welcometextonstart
+local failTest
+local stopTestRequested = false
+local testSettingsSaved = false
+local testGamemode
 local freeroamRes = getResourceFromName "freeroam"
 local TEST_RESOURCE = "editor_test"
 local DUMP_RESOURCE = "editor_dump"
@@ -45,9 +48,13 @@ local function clearQuickSaveState()
 end
 
 local function resumeEditorCoroutine(editorCoroutine, clearState, ...)
+	local testSave = editorCoroutine == saveResourceCoroutine and g_in_test == "preparing"
 	local success, result = coroutine.resume(editorCoroutine, ...)
 	if ( not success ) then
 		clearState()
+	end
+	if testSave and (not success or coroutine.status(editorCoroutine) == "dead" and g_in_test == "preparing") then
+		failTest("Could not save the test resource.")
 	end
 	return success, result
 end
@@ -506,13 +513,17 @@ function saveResourceCoroutineFunction ( resourceName, test, theSaver, client, g
 	end
 
 	local returnValue = xmlSaveFile(xmlNode)
+	xmlUnloadFile(xmlNode)
 	writeCustomScriptingExtension(resource, collectUsedObjectModels())
-	clearResourceMeta ( resource, true )
+	clearResourceMeta ( resource, not test )
 	local metaNode = xmlLoadFile ( ':' .. getResourceName(resource) .. '/' .. "meta.xml" )
-	dumpMeta ( metaNode, metaNodes, resource, resourceName..".map", test )
+	local metaSaved = dumpMeta ( metaNode, metaNodes, resource, resourceName..".map", test )
 	xmlUnloadFile ( metaNode )
 	if ( test ) then
 		saveResourceCoroutine = nil
+		if not returnValue or not metaSaved then
+			return failTest("Could not save the test map or its metadata.")
+		end
 		beginTest(client, gamemodeName)
 		return returnValue
 	end
@@ -785,177 +796,178 @@ function createElementAttributesForSaving(xmlNode, element)
 	return elementNode
 end
 
-local testBackupNodes = {}
+function failTest(reason)
+	triggerClientEvent(root, "saveloadtest_return", resourceRoot, "test", false, false, reason)
+	if g_in_test then
+		g_in_test = "failed"
+		stopTest()
+	end
+	return false
+end
+
 addEventHandler ( "testResource", root,
 function (gamemodeName)
 	if ( client and not isPlayerAllowedToDoEditorAction(client, "test") ) then
-		editor_gui.outputMessage ("You don't have permissions to enable test mode!", client,255,0,0)
+		triggerClientEvent(client, "saveloadtest_return", client, "test", false, false, "You don't have permissions to enable test mode!")
+		triggerClientEvent(client, "resumeGUI", resourceRoot)
 		return false
 	end
-	--Check if the freeroam resource exists
-	if ( not freeroamRes ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false, "'freeroam' not found.  Test could not be started." )
+	if g_in_test then
+		return false
+	end
+	if isEditorSaving() or isEditorOpeningResource() then
+		triggerClientEvent(client, "saveloadtest_return", client, "test", false, false, "Cannot begin test while a save or load is in progress")
+		triggerClientEvent(client, "resumeGUI", resourceRoot)
+		return false
+	end
+	if not freeroamRes then
+		triggerClientEvent(client, "saveloadtest_return", client, "test", false, false, "'freeroam' not found. Test could not be started.")
+		triggerClientEvent(client, "resumeGUI", resourceRoot)
 		return false
 	end
 	g_restoreEDF = nil
-	triggerClientEvent ( root, "suspendGUI", client )
+	stopTestRequested = false
+	g_in_test = "preparing"
+	setElementData(resourceRoot, "g_in_test", true)
+	triggerClientEvent(root, "suspendGUI", resourceRoot)
 	saveResourceCoroutine = coroutine.create(saveResourceCoroutineFunction)
-	local success = resumeEditorCoroutine(saveResourceCoroutine, clearSaveResourceState, TEST_RESOURCE, true, nil, client, gamemodeName)
-	if ( not success ) then
-		triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-		"Dummy 'editor_test' resource may be corrupted!" )
-		return false
-	end
+	resumeEditorCoroutine(saveResourceCoroutine, clearSaveResourceState, TEST_RESOURCE, true, nil, client, gamemodeName)
 end )
 
-function beginTest(client,gamemodeName)
-	if ( isEditorSaving() or isEditorOpeningResource() ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false,
-		"Cannot begin test while a save or load is in progress" )
-		return false
-	end
+function beginTest(client, gamemodeName)
 	local testMap = getResourceFromName(TEST_RESOURCE)
-	if ( not mapmanager.isMap(testMap) ) then
-		triggerClientEvent ( client, "saveloadtest_return", client, "test", false, false,
-		"Dummy 'editor_test' resource may be corrupted!" )
-		return false
+	if not mapmanager.isMap(testMap) then
+		return failTest("Dummy 'editor_test' resource may be corrupted!")
 	end
+	g_in_test = "starting"
 	g_default_spawnmaponstart = get"freeroam.spawnmaponstart"
 	g_default_spawnmapondeath = get"freeroam.spawnmapondeath"
 	g_default_welcometextonstart = get"freeroam.welcometextonstart"
-	resetMapInfo()
+	testSettingsSaved = true
 	setupMapSettings()
 	disablePickups(false)
 
 	if gamemodeName == nil then
 		gamemodeName = lastTestGamemodeName
 	end
+	lastTestGamemodeName = gamemodeName
+	set("*freeroam.welcometextonstart", "false")
+	set("*freeroam.spawnmaponstart", "false")
+	if gamemodeName then
+		set("*freeroam.spawnmapondeath", "false")
+	end
+	if getResourceState(freeroamRes) ~= "running" and not startResource(freeroamRes, true) then
+		return failTest("Could not start freeroam. Check editor_main's resource ACL permissions.")
+	end
 
-	if ( gamemodeName ) then
-		lastTestGamemodeName = gamemodeName
-		set ( "*freeroam.spawnmapondeath", "false" )
-		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
-			restoreSettings()
-			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-			"'editor_main' may lack sufficient ACL privileges to start/stop resources! (1)" )
-			return false
+	local function startTestResources()
+		if stopTestRequested then
+			g_in_test = "cancelled"
+			stopTest()
+			return
 		end
-		local gamemode = getResourceFromName(gamemodeName)
-		if getResourceState ( gamemode ) == "running" and loadedEDF[gamemode] then
-			g_restoreEDF = gamemode
-			addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
-			if not stopResource ( gamemode ) then
-				restoreSettings()
-				g_restoreEDF = nil
-				removeEventHandler ( "onResourceStop", getResourceRootElement(gamemode), startGamemodeOnStop )
-				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-				"'editor_main' may lack sufficient ACL privileges to start/stop resources! (2)" )
-				return false
+		if gamemodeName then
+			testGamemode = getResourceFromName(gamemodeName)
+			local success, started = pcall(mapmanager.changeGamemode, testGamemode, testMap)
+			if not success or not started then
+				return failTest("Could not start the test gamemode. Check its map compatibility and editor_main's resource ACL permissions.")
 			end
+			g_in_test = "gamemode"
 		else
-			if not mapmanager.changeGamemode(gamemode,testMap) then
-				restoreSettings()
-				triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-				"'editor_main' may lack sufficient ACL privileges to start/stop resources! (3)" )
-				return false
+			if getResourceState(testMap) ~= "running" and not startResource(testMap, true) then
+				return failTest("Could not start the test map. Check editor_main's resource ACL permissions.")
 			end
+			g_in_test = "map"
 		end
-		g_in_test = "gamemode"
-	else
-		if gamemodeName == false then
-			lastTestGamemodeName = gamemodeName
+		for i, player in ipairs(getElementsByType("player")) do
+			setElementDimension(player, 0)
 		end
-		if getResourceState(freeroamRes) ~= "running" and not startResource ( freeroamRes, true ) then
-			restoreSettings()
-			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-			"'editor_main' may lack sufficient ACL privileges to start/stop resources! (4)" )
-			return false
-		end
-		if getResourceState(testMap) ~= "running" and not startResource ( testMap, true ) then
-			triggerClientEvent ( root, "saveloadtest_return", client, "test", false, false,
-			"'editor_main' may lack sufficient ACL privileges to start/stop resources! (5)" )
-			return false
-		end
-		g_in_test = "map"
 	end
-	dumpSave()
-	for i,player in ipairs(getElementsByType"player") do
-		setElementDimension ( player, 0 )
-	end
-	setElementData ( resourceRoot, "g_in_test", true )
-	set ( "*freeroam.welcometextonstart", "false" )
-	set ( "*freeroam.spawnmaponstart", "false" )
-	addEvent("onPollStart")
-	addEventHandler("onPollStart", root, function()
-		stopTest()
-		cancelEvent()
-	end)
-end
 
-function startGamemodeOnStop(resource)
-	setTimer ( mapmanager.changeGamemode, 50, 1, resource, getResourceFromName(TEST_RESOURCE))
-	removeEventHandler ( "onResourceStop", source, startGamemodeOnStop )
+	local gamemode = gamemodeName and getResourceFromName(gamemodeName)
+	if gamemode and getResourceState(gamemode) == "running" and loadedEDF[gamemode] then
+		g_restoreEDF = gamemode
+		if not stopResource(gamemode) then
+			g_restoreEDF = nil
+			return failTest("Could not stop the gamemode's EDF resource. Check editor_main's resource ACL permissions.")
+		end
+		-- Resource shutdown must finish before starting it as a gamemode.
+		setTimer(startTestResources, 50, 1)
+	else
+		startTestResources()
+	end
 end
 
 addEvent("stopTest", true)
 function stopTest()
-	if client and not isPlayerAllowedToDoEditorAction(client,"test") then
-		editor_gui.outputMessage ("You don't have permissions to enable test mode!", client,255,0,0)
+	if client and not isPlayerAllowedToDoEditorAction(client, "test") then
+		editor_gui.outputMessage("You don't have permissions to enable test mode!", client, 255, 0, 0)
+		triggerClientEvent(client, "suspendGUI", resourceRoot)
 		return
 	end
-
-	stopResource ( freeroamRes )
-	disablePickups(true)
+	if not g_in_test or g_in_test == "stopping" then return end
+	if g_in_test == "preparing" or g_in_test == "starting" then
+		stopTestRequested = true
+		return
+	end
+	g_in_test = "stopping"
+	stopResource(freeroamRes)
+	if testGamemode then
+		if mapmanager.getRunningGamemode() == testGamemode then
+			mapmanager.stopGamemode()
+		elseif getResourceState(testGamemode) == "running" then
+			stopResource(testGamemode)
+		end
+		testGamemode = nil
+	end
 	local testRes = getResourceFromName(TEST_RESOURCE)
-	--Restore settings to how they were before the test
-	restoreSettings()
-	if g_in_test == "gamemode" then
-		local gamemode = mapmanager.getRunningGamemode()
-		if not gamemode or not ( addEventHandler ( "onResourceStop", getResourceRootElement(gamemode), restoreGUIOnMapStop ) ) then
-			addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
-		end
-		mapmanager.stopGamemode()
-	else
-		if testRes then
-			addEventHandler ( "onResourceStop", getResourceRootElement(testRes), restoreGUIOnMapStop )
-		end
-		resetMapInfo()
+	if testRes and getResourceState(testRes) == "running" then
+		stopResource(testRes)
 	end
-	setupMapSettings()
-	g_in_test = false
-	stopResource ( testRes )
-
-	for index,player in ipairs(getElementsByType("player")) do
-		-- Respawn the player, to stop the player from dieing repeatedly if dead and possibly prevents other bugs
-		local x,y,z = getElementPosition(player)
-		setTimer(spawnPlayer,50,1,player,x,y,z,0,0,0,getWorkingDimension())
+	if testSettingsSaved then
+		restoreSettings()
+		testSettingsSaved = false
 	end
+	disablePickups(true)
 
-	-- Send the map settings (delay is required to work probably because EDF not loaded) #7091
-	setTimer(passNewMapSettings, 1000, 1)
-
-	triggerEvent("editor.fullTestEnded", client or root)
+	-- Keep the test locked until resource shutdown and EDF restoration have finished.
+	setTimer(stopTest2, 50, 1)
 end
 addEventHandler("stopTest", root, stopTest)
 
-function restoreSettings()
-	set ( "*freeroam.spawnmaponstart", g_default_spawnmaponstart )
-	set ( "*freeroam.spawnmapondeath", g_default_spawnmapondeath )
-	set ( "*freeroam.welcometextonstart", g_default_welcometextonstart )
-end
-
-function restoreGUIOnMapStop(resource)
+function stopTest2()
 	if g_restoreEDF then
-		--Start the edf resource again if it was stopped
-		blockMapManager(g_restoreEDF) --Stop mapmanager from treating this like a game.  LIFE IS NOT A GAME.
-		--setTimer(startResource, 50, 1, g_restoreEDF, false, false, true, false, false, false, false, false, true)
-		setTimer(edf.edfStartResource,50,1,g_restoreEDF)
+		blockMapManager(g_restoreEDF)
+		edf.edfStartResource(g_restoreEDF)
 		g_restoreEDF = nil
 	end
-	setTimer(triggerClientEvent, 50, 1, root, "resumeGUI", root)
-	setElementData ( resourceRoot, "g_in_test", nil )
-	removeEventHandler ( "onResourceStop", source, restoreGUIOnMapStop )
+	setupMapSettings()
+	for index, player in ipairs(getElementsByType("player")) do
+		local x, y, z = getElementPosition(player)
+		spawnPlayer(player, x, y, z, 0, 0, 0, getWorkingDimension())
+	end
+	-- Sync the in-memory settings, including changes which have not been saved.
+	triggerClientEvent(root, "syncMapSettings", root, currentMapSettings)
+	g_in_test = false
+	stopTestRequested = false
+	setElementData(resourceRoot, "g_in_test", nil)
+	triggerClientEvent(root, "resumeGUI", root)
+	triggerEvent("editor.fullTestEnded", root)
 end
+
+function restoreSettings()
+	set("*freeroam.spawnmaponstart", g_default_spawnmaponstart)
+	set("*freeroam.spawnmapondeath", g_default_spawnmapondeath)
+	set("*freeroam.welcometextonstart", g_default_welcometextonstart)
+end
+
+addEvent("onPollStart")
+addEventHandler("onPollStart", root, function()
+	if g_in_test then
+		stopTest()
+		cancelEvent()
+	end
+end)
 
 -- dump settings
 function dumpSave()

@@ -6,6 +6,15 @@ local inBasicTest = false
 local lastTestGamemode
 local lastGridListGamemode
 local g_colPatchSetting
+local testPending = false
+
+local function setTestControl(handler)
+	unbindControl("toggle_test", "down", quickTest)
+	unbindControl("toggle_test", "down", stopTest)
+	if handler then
+		bindControl("toggle_test", "down", handler)
+	end
+end
 
 function createTestDialog()
 	testDialog.window = guiCreateWindow ( screenX/2 - 110, screenY/2 - 145, 220, 290, "TEST", false )
@@ -21,16 +30,17 @@ function createTestDialog()
 	addEventHandler ( "onClientGUIClick", testDialog.basic, basicTest, false )
 	--
 	if getElementData ( localPlayer, "waitingToStart" ) then
-		bindControl ( "toggle_test", "down", stopTest )
+		setTestControl(stopTest)
 		addCommandHandler ( "stoptest", stopTest )
 	else
-		bindControl ( "toggle_test", "down", quickTest )
+		setTestControl(quickTest)
 	end
 	bindControl ( "toggle_basictest", "down", basicTest )
 end
 
 function quickTest()
-	if tutorialVars.blockQuickTest then return end
+	if tutorialVars.blockQuickTest or g_suspended or testPending then return end
+	testPending = true
 	-- get the last gamemode that was addded to the map
 	local rowCount = guiGridListGetRowCount(mapsettings.addedGamemodes)
 	local currentLastGamemode = false
@@ -47,11 +57,12 @@ function quickTest()
 	if lastTestGamemode == "<None>" then lastTestGamemode = false end
 	editor_main.dropElement()
 	triggerServerEvent ( "testResource",localPlayer, lastTestGamemode )
-	unbindControl ( "toggle_test", "down", quickTest )
+	setTestControl(nil)
 	if tutorialVars.test then tutorialNext() end
 end
 
 function testShowDialog()
+	if g_suspended or testPending then return end
 	setGUIShowing(false)
 	guiSetInputEnabled ( true )
 	setWorldClickEnabled ( false )
@@ -74,16 +85,23 @@ function testShowDialog()
 		end
 	end
 	guiGridListSetSelectedItem(testDialog.gamemodesList,set,1)
-	unbindControl ( "toggle_test", "down", quickTest )
+	setTestControl(nil)
 	return true
 end
 
 function confirmTest()
+	if g_suspended or testPending then return end
+	testPending = true
+	setTestControl(nil)
 	triggerServerEvent ( "testResource",localPlayer, false )
 end
 
 function suspendGUI()
-	if g_suspended then return end
+	testPending = false
+	if g_suspended then
+		setTestControl(stopTest)
+		return
+	end
 	g_suspended = true
 	guiSetVisible ( testDialog.window, false )
 	guiSetInputEnabled ( false )
@@ -91,6 +109,8 @@ function suspendGUI()
 	showCursor(false)
 	engineSetAsynchronousLoading ( true, false )
 	editor_main.suspend ()
+	-- Suspending clears editor controls, so bind the test control afterwards.
+	setTestControl(stopTest)
 	addCommandHandler ( "stoptest", stopTest )
 	if (not inBasicTest) then return end
 	inBasicTest = false
@@ -103,10 +123,14 @@ addEvent("suspendGUI", true)
 addEventHandler("suspendGUI", root, suspendGUI)
 
 function resumeGUI ()
+	testPending = false
+	removeCommandHandler("stoptest", stopTest)
 	if getElementData ( localPlayer, "waitingToStart" ) then
 		setElementData ( localPlayer, "waitingToStart", nil, false )
+		g_suspended = false
 		editor_main.startEditor()
 		setGUIShowing(true)
+		setTestControl(quickTest)
 		return
 	end
 	freezeTime ( true, currentMapSettings.timeHour, currentMapSettings.timeMinute )
@@ -114,13 +138,17 @@ function resumeGUI ()
 	setElementDimension ( localPlayer, editor_main.getWorkingDimension() )
 	setElementAlpha ( localPlayer, 0 )
 	fadeCamera ( true )
-	removeCommandHandler ( "stoptest", stopTest )
-	if not g_suspended then return end
+	if not g_suspended then
+		setTestControl(quickTest)
+		return
+	end
 	setGUIShowing(true)
 	guiSetInputEnabled ( false )
 	setWorldClickEnabled ( true )
 	engineSetAsynchronousLoading ( false, true )
 	editor_main.resume (true)
+	-- Resuming restores the saved controls; replace any restored test binding.
+	setTestControl(quickTest)
 	g_suspended = false
 	setCloudsEnabled(false)
 end
@@ -128,24 +156,20 @@ addEvent("resumeGUI", true)
 addEventHandler("resumeGUI", root, resumeGUI)
 
 function stopTest()
-	--[[for k,player in ipairs(getElementsByType("player")) do
-		if player ~= localPlayer then
-			setElementDimension(player, editor_main.getWorkingDimension())
-		end
-	end]]
+	if testPending or not (g_suspended or getElementData(localPlayer, "waitingToStart")) then return end
+	testPending = true
+	setTestControl(nil)
 	if tutorialVars.test then tutorialNext() end
-	triggerServerEvent ( "stopTest",localPlayer )
-	unbindControl ( "toggle_test", "down", stopTest )
-	bindControl ( "toggle_test", "down", quickTest )
-	-- resumeGUI ()
+	triggerServerEvent("stopTest", localPlayer)
 end
 
 function testHideDialog()
+	if g_suspended or testPending then return end
 	setGUIShowing(true)
 	guiSetInputEnabled ( false )
 	setWorldClickEnabled ( true )
 	guiSetVisible ( testDialog.window, false )
-	bindControl ( "toggle_test", "down", quickTest )
+	setTestControl(quickTest)
 end
 
 function disableColPatchInTesting()
@@ -169,11 +193,14 @@ function enableColPatchAfterTesting()
 end
 
 function testStart()
+	if g_suspended or testPending then return end
 	local row = guiGridListGetSelectedItem (  testDialog.gamemodesList )
 	if row ~= -1 then
 		local text = guiGridListGetItemText ( testDialog.gamemodesList,row,1)
 		lastTestGamemode = text
 		if text == "<None>" then text = false end
+		testPending = true
+		setTestControl(nil)
 		editor_main.dropElement()
 		triggerServerEvent ( "testResource",localPlayer, text )
 		if tutorialVars.test then tutorialNext() end
@@ -195,7 +222,6 @@ local function freeroamStarting(resource)
 	local workingInterior = editor_main.getWorkingInterior()
 	setElementInterior(localPlayer,workingInterior)
 	setCameraInterior(workingInterior)
-	bindControl ( "toggle_test", "down", stopTest )
 	disableColPatchInTesting()
 end
 addEventHandler("onClientResourceStart", root, freeroamStarting)
@@ -208,7 +234,7 @@ end
 addEventHandler("onClientResourceStop", root, freeroamStopping)
 
 function basicTest()
-	if (g_suspended) then return end
+	if g_suspended or testPending then return end
 
 	if (inBasicTest) then
 		freezeTime(true, currentMapSettings.timeHour, currentMapSettings.timeMinute)

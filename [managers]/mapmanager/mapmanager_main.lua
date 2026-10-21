@@ -72,7 +72,7 @@ addEventHandler("onResourceStart", root,
 				--We need to wait a while to see if any maps were started.  If not, lets try and start a random one
 				setTimer(
 					function()
-						if not getRunningGamemodeMap() then
+						if getRunningGamemode() == startedResource and not getRunningGamemodeMap() then
 							--Lets check if there are any maps for this gamemode
 							local maps = getMapsCompatibleWithGamemode(getRunningGamemode())
 							--If we have any, we'll start a random one

@@ -37,12 +37,14 @@ function removeResourceFile ( resource, path, filetype )
 		local src = xmlNodeGetAttribute ( node, "src" )
 		if src == path then
 			xmlDestroyNode ( node )
+		else
+			i = i + 1
 		end
-		i = i + 1
 	end
 	xmlSaveFile ( metaNode )
 	xmlUnloadFile ( metaNode )
-	return fileDelete ( ':' .. getResourceName(resource) .. '/' .. path )
+	local filePath = ':' .. getResourceName(resource) .. '/' .. path
+	return not fileExists(filePath) or fileDelete(filePath)
 end
 
 local quickRemove = { map=true, setting=true, settings=true }
