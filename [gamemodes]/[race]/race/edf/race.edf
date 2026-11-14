@@ -23,7 +23,7 @@
 		<data name="color" type="color" description="color (#RRGGBBAA hex string)" default="#00F9" />
 		<data name="size" type="number" description="marker size" default="2.25" />
 		<data name="targetcolor" type="color" description="Checkpoint target arrow color (#RRGGBBAA hex string)" default="#FF4040FF" required="false" persistDefault="false" />
-		<data name="targetsize" type="number" description="Checkpoint target arrow size (0 uses the marker-size-based default)" default="0" required="false" persistDefault="false" />
+		<data name="targetsize" type="number" description="Checkpoint target arrow size (0 hides it; leave empty for the default)" default="-1" required="false" persistDefault="false" />
 		<data name="nextid" type="element:checkpoint" description="The next checkpoint after this one" required="false" default="" />
 		<data name="vehicle" type="vehicleID" required="false"/>
 		<marker color="!color!" type="!type!" size="!size!" targetcolor="!targetcolor!" targetsize="!targetsize!"/>

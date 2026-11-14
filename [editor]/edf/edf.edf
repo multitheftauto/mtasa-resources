@@ -17,7 +17,7 @@
 		<data name="type" type="markerType" description="Marker type" default="cylinder" />
 		<data name="target" type="string" description="Point to face: X,Y,Z (ring rotation or checkpoint arrow). Leave empty for no target." default="" required="false" persistDefault="false" />
 		<data name="targetcolor" type="color" description="Checkpoint target arrow color (#RRGGBBAA hex string)" default="#FF4040FF" required="false" persistDefault="false" />
-		<data name="targetsize" type="number" description="Checkpoint target arrow size (0 uses the marker-size-based default)" default="0" required="false" persistDefault="false" />
+		<data name="targetsize" type="number" description="Checkpoint target arrow size (0 hides it; leave empty for the default)" default="-1" required="false" persistDefault="false" />
 		<data name="size" type="number" description="Marker size" default="1" />
 		<data name="color" type="color" description="Color (#RRGGBBAA hex string)" default="#00F9" />
 		<data name="interior" type="integer" description="GTA interior world" default="0" />

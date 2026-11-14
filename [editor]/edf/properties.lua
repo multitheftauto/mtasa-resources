@@ -131,10 +131,22 @@ propertyGetters = {
 	marker = {
 		type = getMarkerType,
 		target = function(element) return getElementData(element, "target") or "" end,
+		targetsize = function(element)
+			local targetSize = getElementData(element, "targetsize")
+			if targetSize == -1 then return nil end
+			return targetSize
+		end,
 		size = getMarkerSize,
 		color = function(element)
 			local r, g, b, a = getMarkerColor(element)
 			return getStringFromColor(r,g,b,a)
+		end,
+	},
+	checkpoint = {
+		targetsize = function(element)
+			local targetSize = getElementData(element, "targetsize")
+			if targetSize == -1 then return nil end
+			return targetSize
 		end,
 	},
 	pickup = {

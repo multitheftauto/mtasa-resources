@@ -117,14 +117,14 @@ eC.string = {
 		value = "",
 	},
 	constructor = function( self, info )
-		self.GUI.editField = guiCreateEdit( info.x, info.y, info.width, info.height, tostring(info.value), info.relative, info.parent )
+		self.GUI.editField = guiCreateEdit( info.x, info.y, info.width, info.height, tostring(info.value or ""), info.relative, info.parent )
 
 		self:addHandler( "onClientGUIChanged", self.GUI.editField, self.callChangeHandlers )
 
 		return self
 	end,
 	setValue = function( self, value )
-		return guiSetText( self.GUI.editField, tostring(value) )
+		return guiSetText( self.GUI.editField, tostring(value or "") )
 	end,
 	getValue = function( self )
 		return guiGetText( self.GUI.editField )

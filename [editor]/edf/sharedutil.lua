@@ -52,8 +52,8 @@ function edfApplyMarkerTargetArrowProperties(element, targetColor, targetSize, t
 
 	local requestedSize = tonumber(targetSize)
 	if targetSize ~= nil and targetSize ~= false and targetSize ~= "" and not requestedSize then return false end
-	if requestedSize and requestedSize < 0 then return false end
-	if requestedSize and requestedSize > 0 then
+	if requestedSize and requestedSize < -1 then return false end
+	if requestedSize and requestedSize >= 0 then
 		return setMarkerTargetArrowProperties(element, red, green, blue, alpha, requestedSize)
 	end
 	return setMarkerTargetArrowProperties(element, red, green, blue, alpha)
