@@ -283,19 +283,31 @@ propertySetters = {
 	marker = {
 		type = function(element, markerType)
 			if not markerType or not setMarkerType(element, markerType) then return false end
-			return edfSetMarkerTarget(element, getElementData(element, "target"))
+			if not edfSetMarkerTarget(element, getElementData(element, "target")) then return false end
+			return edfApplyMarkerTargetArrowProperties(element,
+				getElementData(element, "targetcolor"), getElementData(element, "targetsize"))
 		end,
 		target = function(element, target)
 			exports.editor_main:clearElementQuat(element)
-			return edfSetMarkerTarget(element, target)
+			if not edfSetMarkerTarget(element, target) then return false end
+			return edfApplyMarkerTargetArrowProperties(element,
+				getElementData(element, "targetcolor"), getElementData(element, "targetsize"))
 		end,
 		size = function(element, markerSize)
-			if markerSize then return setMarkerSize(element, markerSize)
+			if markerSize and setMarkerSize(element, markerSize) then
+				return edfApplyMarkerTargetArrowProperties(element,
+					getElementData(element, "targetcolor"), getElementData(element, "targetsize"))
 			else return false end
 		end,
 		color = function(element, color)
 			if color then return setMarkerColor(element, getColorFromString(color))
 			else return false end
+		end,
+		targetcolor = function(element, targetColor)
+			return edfApplyMarkerTargetArrowProperties(element, targetColor, getElementData(element, "targetsize"))
+		end,
+		targetsize = function(element, targetSize)
+			return edfApplyMarkerTargetArrowProperties(element, getElementData(element, "targetcolor"), targetSize)
 		end,
 	},
 	pickup = {

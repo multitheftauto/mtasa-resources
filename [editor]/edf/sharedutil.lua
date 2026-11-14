@@ -26,6 +26,36 @@ local function getMarkerTargetPosition(element)
 	return getMarkerTarget(element)
 end
 
+function edfApplyMarkerTargetArrowProperties(element, targetColor, targetSize)
+	if not isRotatableMarker(element) or getMarkerType(element) ~= "checkpoint" then
+		return true
+	end
+	if targetColor == nil and targetSize == nil then
+		return true
+	end
+	local target = getElementData(element, "target")
+	if not target or target == "" then
+		return true
+	end
+
+	local red, green, blue, alpha = getMarkerTargetArrowProperties(element)
+	if not red then return false end
+	if targetColor == "" then
+		red, green, blue, alpha = 255, 64, 64, 255
+	elseif targetColor then
+		red, green, blue, alpha = getColorFromString(targetColor)
+		if not red then return false end
+	end
+
+	local requestedSize = tonumber(targetSize)
+	if targetSize ~= nil and targetSize ~= false and targetSize ~= "" and not requestedSize then return false end
+	if requestedSize and requestedSize < 0 then return false end
+	if requestedSize and requestedSize > 0 then
+		return setMarkerTargetArrowProperties(element, red, green, blue, alpha, requestedSize)
+	end
+	return setMarkerTargetArrowProperties(element, red, green, blue, alpha)
+end
+
 -- Keep targets on unsupported marker types so switching back restores the direction.
 function edfSetMarkerTarget(element, target)
 	if not isRotatableMarker(element) then
