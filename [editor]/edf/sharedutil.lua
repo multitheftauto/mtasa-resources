@@ -26,7 +26,7 @@ local function getMarkerTargetPosition(element)
 	return getMarkerTarget(element)
 end
 
-function edfApplyMarkerTargetArrowProperties(element, targetColor, targetSize)
+function edfApplyMarkerTargetArrowProperties(element, targetColor, targetSize, targetIsSet)
 	if not isRotatableMarker(element) or getMarkerType(element) ~= "checkpoint" then
 		return true
 	end
@@ -34,7 +34,10 @@ function edfApplyMarkerTargetArrowProperties(element, targetColor, targetSize)
 		return true
 	end
 	local target = getElementData(element, "target")
-	if not target or target == "" then
+	if targetIsSet == nil then
+		targetIsSet = target and target ~= ""
+	end
+	if not targetIsSet then
 		return true
 	end
 

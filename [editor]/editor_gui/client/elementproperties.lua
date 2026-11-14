@@ -14,7 +14,7 @@ layout.margin = {
 	bottom = 5, --px
 }
 layout.label = {
-	width = 55, --px
+	width = 80, --px
 	height = 23, --px
 	R = 255,
 	G = 255,
@@ -23,7 +23,7 @@ layout.label = {
 layout.window = {
 	x = 50, --px
 	y = 100, --px
-	width  = 290, --px
+	width  = 330, --px
 	height = 450, --px
 }
 layout.button = {

@@ -316,6 +316,7 @@ propertySetters = {
 				getElementData(element, "targetcolor"), getElementData(element, "targetsize"))
 		end,
 		size = function(element, markerSize)
+			markerSize = markerSize or 1
 			if not setMarkerSize(element, markerSize) then return false end
 			return edfApplyMarkerTargetArrowProperties(element,
 				getElementData(element, "targetcolor"), getElementData(element, "targetsize"))
