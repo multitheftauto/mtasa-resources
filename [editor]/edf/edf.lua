@@ -428,7 +428,11 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 	-- get basic element properties
 	parentData.position = { edfGetElementPosition(theElement) }
 	parentData.rotation = { edfGetElementRotation(theElement) }
-	parentData.scale = edfGetElementScale(theElement)
+	if elementDefinition.data.scale then
+		parentData.scale = edfGetElementScale(theElement)
+	else
+		parentData.scale = nil
+	end
 	parentData.dimension = edfGetElementDimension(theElement)
 	parentData.interior = edfGetElementInterior(theElement)
 	parentData.alpha = edfGetElementAlpha(theElement)
@@ -591,7 +595,11 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 	parametersTable = parametersTable or {}
 	parametersTable.position = parametersTable.position or {0,0,0}
 	parametersTable.rotation = parametersTable.rotation or {0,0,0}
-	parametersTable.scale = parametersTable.scale or 1
+	if edf[fromResource]["elements"][elementType].data.scale then
+		parametersTable.scale = parametersTable.scale or 1
+	else
+		parametersTable.scale = nil
+	end
 	parametersTable.interior = parametersTable.interior or 0
 	parametersTable.dimension = parametersTable.dimension or 0
 	parametersTable.alpha = parametersTable.alpha or 255
@@ -683,7 +691,9 @@ function edfCloneElement(theElement, editorMode )
 	parametersTable = {}
 	parametersTable.position = {edfGetElementPosition(theElement)} or {0,0,0}
 	parametersTable.rotation = {edfGetElementRotation(theElement)} or {0,0,0}
-	parametersTable.scale = edfGetElementScale(theElement) or 1
+	if edf[creatorResource]["elements"][elementType].data.scale then
+		parametersTable.scale = edfGetElementScale(theElement) or 1
+	end
 	parametersTable.interior = edfGetElementInterior(theElement) or 0
 	parametersTable.dimension = edfGetElementDimension(theElement) or 0
 	parametersTable.alpha = edfGetElementAlpha(theElement) or 255

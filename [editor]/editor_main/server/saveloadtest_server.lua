@@ -760,7 +760,9 @@ function createElementAttributesForSaving(xmlNode, element)
 			xmlNodeSetAttribute(elementNode, "rotY", toAttribute(round(dataValue[2], 3)))
 			xmlNodeSetAttribute(elementNode, "rotZ", toAttribute(round(dataValue[3], 3)))
 		elseif ( dataName == "scale" ) then
-			xmlNodeSetAttribute(elementNode, "scale", toAttribute(round(dataValue, 3)))
+			if dataFields.scale then
+				xmlNodeSetAttribute(elementNode, "scale", toAttribute(round(dataValue, 3)))
+			end
 		elseif ( dataName == "posX" or dataName == "posY" or dataName == "posZ") then
 			xmlNodeSetAttribute(elementNode, dataName, toAttribute(round(dataValue, 5)))
 			if (dataName == "posX") then
