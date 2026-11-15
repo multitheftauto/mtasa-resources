@@ -57,19 +57,23 @@ function drawCheckpointConnections()
                     local d = Vector3D:new(dx,dy,dz+1)
                     local dir = d:SubV(s)
                     local length = dir:Length()
-                    local mid = s:AddV(dir:Mul(0.5))
-                    dir:Normalize()
+                    if not length or length == 0 or length ~= length then
+                        lineList[curIdx + 1] = false
+                    else
+                        local mid = s:AddV(dir:Mul(0.5))
+                        dir:Normalize()
 
-                    local left = dir:CrossV(Vector3D:new(0,0,1))
-                    left.z = 0
-                    left:Normalize()
-                    left = left:Mul(2)
+                        local left = dir:CrossV(Vector3D:new(0,0,1))
+                        left.z = 0
+                        left:Normalize()
+                        left = left:Mul(2)
 
-                    local p = d:SubV(dir:Mul(3))
-                    local p1 = p:AddV(left)
-                    local p2 = p:SubV(left)
+                        local p = d:SubV(dir:Mul(3))
+                        local p1 = p:AddV(left)
+                        local p2 = p:SubV(left)
 
-                    lineList[curIdx + 1] = {s=s,d=d,p1=p1,p2=p2,m=mid,length=length}
+                        lineList[curIdx + 1] = {s=s,d=d,p1=p1,p2=p2,m=mid,length=length}
+                    end
 				end
 			end
 		end
@@ -100,9 +104,17 @@ function drawCheckpointConnections()
 						width = width + (dist-100)/20
 					end
 
-					dxDrawLine3D ( line.s.x,line.s.y,line.s.z, line.d.x,line.d.y,line.d.z, color, width, postGui )
-					dxDrawLine3D ( line.d.x,line.d.y,line.d.z, line.p1.x,line.p1.y,line.p1.z, color, width, postGui )
-					dxDrawLine3D ( line.d.x,line.d.y,line.d.z, line.p2.x,line.p2.y,line.p2.z, color, width, postGui )
+					local points = {
+						{ line.s.x, line.s.y, line.s.z, line.d.x, line.d.y, line.d.z },
+						{ line.d.x, line.d.y, line.d.z, line.p1.x, line.p1.y, line.p1.z },
+						{ line.d.x, line.d.y, line.d.z, line.p2.x, line.p2.y, line.p2.z },
+					}
+					for _, pointSet in ipairs(points) do
+						if pointSet[1] == pointSet[1] and pointSet[2] == pointSet[2] and pointSet[3] == pointSet[3]
+							and pointSet[4] == pointSet[4] and pointSet[5] == pointSet[5] and pointSet[6] == pointSet[6] then
+							dxDrawLine3D ( pointSet[1], pointSet[2], pointSet[3], pointSet[4], pointSet[5], pointSet[6], color, width, postGui )
+						end
+					end
 				end
 			end
 		end
@@ -169,6 +181,12 @@ Vector3D = {
 
 	Normalize = function(self)
 		local mod = self:Length()
+		if not mod or mod == 0 or mod ~= mod then
+			self.x = 0
+			self.y = 0
+			self.z = 0
+			return
+		end
 		self.x = self.x / mod
 		self.y = self.y / mod
 		self.z = self.z / mod
