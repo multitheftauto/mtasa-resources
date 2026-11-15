@@ -495,7 +495,9 @@ function detachElement()
 			-- sync position/rotation
 			posX, posY, posZ = getElementPosition(selectedElement)
 			triggerServerEvent("syncProperty", localPlayer, "position", {posX, posY, posZ}, exports.edf:edfGetAncestor(selectedElement))
-			if hasRotation[getElementType(selectedElement)] or exports.edf:isRotatableMarker(selectedElement) then
+			if exports.edf:isRotatableMarker(selectedElement) then
+				triggerServerEvent("syncProperty", localPlayer, "target", getElementData(selectedElement, "target") or "", exports.edf:edfGetAncestor(selectedElement))
+			elseif hasRotation[getElementType(selectedElement)] then
 				rotX, rotY, rotZ = getElementRotation(selectedElement, "ZYX")
 				triggerServerEvent("syncProperty", localPlayer, "rotation", {rotX, rotY, rotZ}, exports.edf:edfGetAncestor(selectedElement))
 			end

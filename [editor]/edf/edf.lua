@@ -600,7 +600,7 @@ function edfCreateElement(elementType, creatorClient, fromResource, parametersTa
 		local childData = {}
 		for property, propertyData in pairs(edf[fromResource]["elements"][elementType].data) do
 			--try to get the given value in target datatype
-			if convert[propertyData.datatype] then
+			if parametersTable[property] ~= nil and convert[propertyData.datatype] then
 				parametersTable[property] = convert[propertyData.datatype](parametersTable[property])
 			end
 			--store the value, or its default
