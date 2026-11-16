@@ -51,9 +51,18 @@ local edfCreateBasic = {
 		local r,g,b,a = getColorFromString(cdata.color)
 		if r then cdata.colorR = r; cdata.colorG = g; cdata.colorB = b; cdata.colorA = a end
 		local marker = createMarker(cdata.position[1], cdata.position[2], cdata.position[3], cdata.type, cdata.size, cdata.colorR, cdata.colorG, cdata.colorB, cdata.colorA)
-		if marker and cdata.target and cdata.target ~= "" then
-			setElementData(marker, "target", cdata.target)
-			edfSetMarkerTarget(marker, cdata.target)
+		if marker then
+			if cdata.targetcolor then
+				setElementData(marker, "targetcolor", cdata.targetcolor)
+			end
+			if cdata.targetsize then
+				setElementData(marker, "targetsize", cdata.targetsize)
+			end
+			if cdata.target and cdata.target ~= "" then
+				setElementData(marker, "target", cdata.target)
+				edfSetMarkerTarget(marker, cdata.target)
+			end
+			edfApplyMarkerTargetArrowProperties(marker, cdata.targetcolor, cdata.targetsize)
 		end
 		return marker
 	end,
@@ -423,6 +432,7 @@ function edfRepresentElement(theElement, resource, parentData, editorMode, restr
 
 	if elementType == "marker" then
 		edfSetMarkerTarget(theElement, parentData.target)
+		edfApplyMarkerTargetArrowProperties(theElement, parentData.targetcolor, parentData.targetsize)
 	end
 
 	-- get basic element properties
@@ -711,7 +721,15 @@ function edfCloneElement(theElement, editorMode )
 
 		-- For things that cloneElement doesn't actually clone
 		if elementType == "marker" then
+			for _, property in ipairs({"targetcolor", "targetsize"}) do
+				local value = getElementData(oldElement, property)
+				if value ~= nil then
+					setElementData(theElement, property, value)
+				end
+			end
 			edfSetMarkerTarget(theElement, getElementData(oldElement, "target"))
+			edfApplyMarkerTargetArrowProperties(theElement,
+				getElementData(theElement, "targetcolor"), getElementData(theElement, "targetsize"))
 		end
 		if (getElementType(theElement) == "vehicle" and getVehicleType(theElement) == "Train") then
 			setTrainDerailed(theElement, true)

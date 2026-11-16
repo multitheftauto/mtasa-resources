@@ -1,7 +1,7 @@
 <meta>
 	<info author="jbeta" description="Element Definition Format" edf:definition="edf.edf" version="1.0.0" />
 
-	<min_mta_version server="1.6.0-9.21765" />
+	<min_mta_version client="1.6.0-9.22620" server="1.6.0-9.22620" />
 
 	<script src="sharedutil.lua" type="shared" />
 	<script src="interface.lua" />
@@ -42,6 +42,7 @@
 	<export function="edfGetElementPosition" /> <!-- number, number, number -->
 	<export function="edfSetElementPosition" /> <!-- bool -->
 	<export function="isRotatableMarker" /> <!-- bool -->
+	<export function="edfApplyMarkerTargetArrowProperties" /> <!-- bool -->
 	<export function="edfGetElementRotation" /> <!-- number, number, number -->
 	<export function="edfSetElementRotation" /> <!-- bool -->
 	<export function="edfGetElementScale" /> <!-- number -->
@@ -63,6 +64,7 @@
 	<export function="edfGetElementPosition" type="client" /> <!-- number, number, number -->
 	<export function="edfSetElementPosition" type="client" /> <!-- bool -->
 	<export function="isRotatableMarker" type="client" /> <!-- bool -->
+	<export function="edfApplyMarkerTargetArrowProperties" type="client" /> <!-- bool -->
 	<export function="edfGetElementRotation" type="client" /> <!-- number, number, number -->
 	<export function="edfSetElementRotation" type="client" /> <!-- bool -->
 	<export function="edfGetElementScale" type="client" /> <!-- number -->

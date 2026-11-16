@@ -131,10 +131,22 @@ propertyGetters = {
 	marker = {
 		type = getMarkerType,
 		target = function(element) return getElementData(element, "target") or "" end,
+		targetsize = function(element)
+			local targetSize = getElementData(element, "targetsize")
+			if targetSize == -1 then return nil end
+			return targetSize
+		end,
 		size = getMarkerSize,
 		color = function(element)
 			local r, g, b, a = getMarkerColor(element)
 			return getStringFromColor(r,g,b,a)
+		end,
+	},
+	checkpoint = {
+		targetsize = function(element)
+			local targetSize = getElementData(element, "targetsize")
+			if targetSize == -1 then return nil end
+			return targetSize
 		end,
 	},
 	pickup = {
@@ -306,12 +318,29 @@ propertySetters = {
 	marker = {
 		type = function(element, markerType)
 			if not setMarkerType(element, markerType) then return false end
-			return edfSetMarkerTarget(element, getElementData(element, "target"))
+			if not edfSetMarkerTarget(element, getElementData(element, "target")) then return false end
+			return edfApplyMarkerTargetArrowProperties(element,
+				getElementData(element, "targetcolor"), getElementData(element, "targetsize"))
 		end,
-		target = edfSetMarkerTarget,
-		size = setMarkerSize,
+		target = function(element, target)
+			if not edfSetMarkerTarget(element, target) then return false end
+			return edfApplyMarkerTargetArrowProperties(element,
+				getElementData(element, "targetcolor"), getElementData(element, "targetsize"))
+		end,
+		size = function(element, markerSize)
+			markerSize = markerSize or 1
+			if not setMarkerSize(element, markerSize) then return false end
+			return edfApplyMarkerTargetArrowProperties(element,
+				getElementData(element, "targetcolor"), getElementData(element, "targetsize"))
+		end,
 		color = function(element, color)
 			return setMarkerColor(element, getColorFromString(color))
+		end,
+		targetcolor = function(element, targetColor)
+			return edfApplyMarkerTargetArrowProperties(element, targetColor, getElementData(element, "targetsize"))
+		end,
+		targetsize = function(element, targetSize)
+			return edfApplyMarkerTargetArrowProperties(element, getElementData(element, "targetcolor"), targetSize)
 		end,
 	},
 	pickup = {

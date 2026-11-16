@@ -1,6 +1,14 @@
 g_ModelForPickupType = { nitro = 2221, repair = 2222, vehiclechange = 2223 }
 models = {}
 
+local function applyCheckpointTargetArrowProperties(checkpoint, marker)
+	return exports.edf:edfApplyMarkerTargetArrowProperties(marker,
+		exports.edf:edfGetElementProperty(checkpoint, "targetcolor"),
+		exports.edf:edfGetElementProperty(checkpoint, "targetsize"),
+		true
+	)
+end
+
 startTick = getTickCount()
 
 function onStart() --Callback triggered by edf
@@ -43,10 +51,16 @@ addEventHandler ( "onClientElementPropertyChanged", root,
 						setMarkerIcon ( marker, "arrow" )
 					end
 					setMarkerTarget ( marker, exports.edf:edfGetElementPosition(nextID) )
+					applyCheckpointTargetArrowProperties(source, marker)
 				else
 					if getMarkerType(marker) == "checkpoint" then
 						setMarkerIcon ( marker, "finish" )
 					end
+				end
+			elseif propertyName == "targetcolor" or propertyName == "targetsize" then
+				local nextID = exports.edf:edfGetElementProperty ( source, "nextid" )
+				if nextID then
+					applyCheckpointTargetArrowProperties(source, getRepresentation(source, "marker"))
 				end
 			end
 		end

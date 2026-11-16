@@ -1,5 +1,13 @@
 g_ModelForPickupType = { nitro = 2221, repair = 2222, vehiclechange = 2223 }
 
+local function applyCheckpointTargetArrowProperties(checkpoint, marker)
+	return exports.edf:edfApplyMarkerTargetArrowProperties(marker,
+		exports.edf:edfGetElementProperty(checkpoint, "targetcolor"),
+		exports.edf:edfGetElementProperty(checkpoint, "targetsize"),
+		true
+	)
+end
+
 addEventHandler ( "onMapOpened", root,
 	function()
 		for i,pickup in ipairs(getElementsByType"racepickup") do
@@ -17,6 +25,7 @@ addEventHandler ( "onMapOpened", root,
 					setMarkerIcon ( marker, "arrow" )
 				end
 				setMarkerTarget ( marker, exports.edf:edfGetElementPosition(nextID) )
+				applyCheckpointTargetArrowProperties(checkpoint, marker)
 			else
 				if getMarkerType(marker) == "checkpoint" then
 					setMarkerIcon ( marker, "finish" )
@@ -79,6 +88,7 @@ addEventHandler ( "onElementPropertyChanged", root,
 						setMarkerIcon ( marker, "arrow" )
 					end
 					setMarkerTarget ( marker, exports.edf:edfGetElementPosition(nextID) )
+					applyCheckpointTargetArrowProperties(source, marker)
 				else
 					if getMarkerType(marker) == "checkpoint" then
 						setMarkerIcon ( marker, "finish" )
@@ -90,7 +100,13 @@ addEventHandler ( "onElementPropertyChanged", root,
 					if exports.edf:edfGetElementProperty ( checkpoint, "nextid" ) == source then
 						local marker = getRepresentation(checkpoint,"marker")
 						setMarkerTarget ( marker, exports.edf:edfGetElementPosition(source) )
+						applyCheckpointTargetArrowProperties(checkpoint, marker)
 					end
+				end
+			elseif propertyName == "targetcolor" or propertyName == "targetsize" then
+				local nextID = exports.edf:edfGetElementProperty ( source, "nextid" )
+				if nextID then
+					applyCheckpointTargetArrowProperties(source, getRepresentation(source, "marker"))
 				end
 			end
 		end
